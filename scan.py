@@ -1,31 +1,31 @@
 from extract import scan_recursively
 from filesystem import find_root_path, find_with_extension
+import display
 import sys
 from os import getcwd, path
 
-EXTENSIONS_LIST = [".sh", ".crt", ".pem", ".so", ".conf", ".script", ".bin"]
-CODE_EXTENSIONS_LIST = [".c", ".cpp", ".js", ".php", ".py"]
 
 def main():
-    print("Name of program: ", sys.argv[0])
-    print()
-    firmware = sys.argv[len(sys.argv)-1]
-    print("=====")
-    print("Scan file: ", firmware)
 
-    modules = scan_recursively(firmware)
+    # Display banner
+    display.banner()
 
-    extracted_directory = "_" + firmware + ".extracted"
+    # Start scanning firmware
+    firmware_name = sys.argv[len(sys.argv)-1]
+    print("Start scanning and extracting the firmware: " + display.Color.BLUE + firmware_name + display.Color.END)
+    modules = scan_recursively(firmware_name)
+
+    extracted_directory = "_" + firmware_name + ".extracted"
     flag, root_path = find_root_path(extracted_directory)
 
-    print("Full path of the root filesystem: ", root_path)
+    print("Full path of the root filesystem: " + display.Color.BLUE + root_path + display.Color.END)
+    print("----------------------------------")
 
-    for extensions in EXTENSIONS_LIST:
-        find_with_extension(path.join(getcwd(),root_path), extensions)
+    # List all files with specific extensions
+    find_with_extension(path.join(getcwd(),root_path))
+    print("----------------------------------")
 
-    for extensions in CODE_EXTENSIONS_LIST:
-        find_with_extension(path.join(getcwd(),root_path), extensions)
-
+    print("Done")
 
 if __name__ == "__main__":
     main()
