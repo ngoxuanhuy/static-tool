@@ -1,8 +1,9 @@
 from extract import scan_recursively
 from filesystem import find_root_path, find_with_extension
+from patterns import find_accounts, find_keys
 import display
 import sys
-from os import getcwd, path
+import os
 
 
 def main():
@@ -22,9 +23,12 @@ def main():
     print("----------------------------------")
 
     # List all files with specific extensions
-    find_with_extension(path.join(getcwd(),root_path))
+    find_with_extension(os.path.join(os.getcwd(),root_path), firmware_name)
     print("----------------------------------")
 
+    # Find all possible accounts from /etc/passwd
+    find_accounts(os.path.join(os.getcwd(), root_path), firmware_name)
+    find_keys(os.path.join(os.getcwd(), root_path), firmware_name)
     print("Done")
 
 if __name__ == "__main__":
